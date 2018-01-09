@@ -1,0 +1,22 @@
+{
+    "name": "custom-sbrick",
+    "version": "0.0.1",
+    "description": "A Bluetooth service for controlling an SBrick",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "bluetooth": "*"
+    },
+    "files": [
+        "README.md",
+        "extension.cpp",
+        "SbrickControlService.cpp",
+        "SbrickControlService.h",
+        "shims.d.ts",
+        "enums.d.ts"
+    ],
+    "testFiles": [
+        "tests.ts"
+    ],
+    "public": true
+}
