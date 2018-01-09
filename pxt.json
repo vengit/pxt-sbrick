@@ -1,7 +1,8 @@
 {
-    "name": "custom-sbrick",
+    "name": "sbrick",
     "version": "0.0.1",
     "description": "A Bluetooth service for controlling an SBrick",
+    "icon": "\uf1b9",
     "license": "MIT",
     "dependencies": {
         "core": "*",
@@ -18,5 +19,5 @@
     "testFiles": [
         "tests.ts"
     ],
-    "public": true
+    "public": false
 }

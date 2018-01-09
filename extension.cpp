@@ -1,7 +1,7 @@
 #include "pxt.h"
 #include "SbrickControlService.h"
 
-namespace bluetooth {
+namespace sbrick {
     SbrickControlService* _pService = NULL;
     Action _handler;
 
@@ -17,11 +17,9 @@ namespace bluetooth {
     }
 
     /**
-    * Starts a custom sensor service. The handler must call ``setSensorTemperature`` 
-    * to update the temperature sent to the service.
+    * Starts the SBrick service.
     */
-    //% blockId=sbrick_startSbrickControlService
-    //% block="SBrick control service"
+    //% blockId=sbrick_startSbrickControlService block="SBrick control service"
     void startSbrickControlService(Action handler) {
         if (NULL != _pService) return;
 
@@ -34,11 +32,19 @@ namespace bluetooth {
     /**
     * Sets the current temperature value on the external temperature sensor
     */
-    //% blockId=sbrick_setTemperatureSensorValue
-    //% block="Dummy block"
-    void setTemperatureSensorValue(int temperature) {
-        if (NULL == _pService) return;
+    //% blockId=sbrick_drive block="Drive"
+    void drive(int port, int power) {
+    }
 
-        _pService->setTemperature(temperature);
+    //% blockId=sbrick_brake block="Brake"
+    void brake(int port, int power) {
+    }
+
+    //% blockId=sbrick_measure block="Start measurement"
+    void measure(int channel) {
+    }
+
+    //% blockId=sbrick_connect block="Connect to SBrick"
+    void connect(char * id) {
     }
 }

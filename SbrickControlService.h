@@ -14,8 +14,8 @@ extern const uint8_t  SbrickControlServiceDataUUID[];
 extern const uint8_t  SbrickControlServicePeriodUUID[];
 
 /**
-  * Class definition for the custom MicroBit Temperature Service.
-  * Provides a BLE service to beam any temperature
+  * Class definition for the SBrick Service.
+  * Provides a BLE service to control an SBrick
   */
 class SbrickControlService
 {

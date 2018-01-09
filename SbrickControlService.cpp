@@ -1,6 +1,6 @@
 /**
-  * Class definition for the custom MicroBit Temperature Service.
-  * Provides a BLE service to remotely read the silicon temperature of the nRF51822.
+  * Class definition for the SBrick Service.
+  * Provides a BLE service to control an SBrick.
   */
 #include "MicroBitConfig.h"
 #include "ble/UUID.h"

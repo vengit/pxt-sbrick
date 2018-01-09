@@ -1,20 +1,17 @@
 // Auto-generated. Do not edit.
-declare namespace bluetooth {
+declare namespace sbrick {
 
     /**
-     * Starts a custom sensor service. The handler must call ``setSensorTemperature`` 
-     * to update the temperature sent to the service.
+     * Starts the SBrick service.
      */
-    //% blockId=sbrick_startSbrickControlService
-    //% block="SBrick control service" shim=bluetooth::startSbrickControlService
+    //% blockId=sbrick_startSbrickControlService block="SBrick control service" shim=sbrick::startSbrickControlService
     function startSbrickControlService(handler: () => void): void;
 
     /**
      * Sets the current temperature value on the external temperature sensor
      */
-    //% blockId=sbrick_setTemperatureSensorValue
-    //% block="Dummy block" shim=bluetooth::setTemperatureSensorValue
-    function setTemperatureSensorValue(temperature: number): void;
+    //% blockId=sbrick_drive block="Drive" shim=sbrick::drive
+    function drive(port: number, power: number): void;
 }
 
 // Auto-generated. Do not edit. Really.
