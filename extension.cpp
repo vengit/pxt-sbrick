@@ -30,21 +30,30 @@ namespace sbrick {
     }
 
     /**
-    * Sets the current temperature value on the external temperature sensor
+    * Drives
     */
     //% blockId=sbrick_drive block="Drive"
     void drive(int port, int power) {
     }
 
+    /**
+    * Brakes
+    */
     //% blockId=sbrick_brake block="Brake"
     void brake(int port, int power) {
     }
 
+    /**
+    * Sets up measurement
+    */
     //% blockId=sbrick_measure block="Start measurement"
     void measure(int channel) {
     }
 
+    /**
+    * Invites an SBrick to connect
+    */
     //% blockId=sbrick_connect block="Connect to SBrick"
-    void connect(char * id) {
+    void connect(int id) {
     }
 }
