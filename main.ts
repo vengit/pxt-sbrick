@@ -5,25 +5,25 @@
 /* A micro:bit event value contains an SBrick command and parameters.
  * The most significant 4 bit is the command, the rest are the parameters.
  *
- * Brake: EVENT_SBRICK_CMD | [4: 0] [3: Port] [9: n/a ]
- * Drive: EVENT_SBRICK_CMD | [4: 1] [3: Port] [1: direction] [8: power]
- * Set m: EVENT_SBRICK_CMD | [4: 2] [4: Channel] [8: n/a]
- * Clr m: EVENT_SBRICK_CMD | [4: 3] [4: Channel] [8: n/a]
- * Freq:  EVENT_SBRICK_CMD | [4: 4] [4: low/hi: 0/1] [8: T1CC0H value low/hi byte]
+ * Brake: EVENT_SBRICK_CMD  | [4: 0] [3: Port] [9: n/a ]
+ * Drive: EVENT_SBRICK_CMD  | [4: 1] [3: Port] [1: direction] [8: power]
+ * Set m: EVENT_SBRICK_CMD  | [4: 2] [4: Channel] [8: n/a]
+ * Clr m: EVENT_SBRICK_CMD  | [4: 3] [4: Channel] [8: n/a]
+ * Freq:  EVENT_SBRICK_FREQ | [16: T1CC0H value low/hi byte]
  * 
- * Conn:  EVENT_SBRICK_RSP | [1: 1] [15: n/a]
- * Meas:  EVENT_SBRICK_ADC | [4: channel] [12: value]
+ * Conn:  EVENT_SBRICK_RSP  | [1: 1] [15: n/a]
+ * Meas:  EVENT_SBRICK_ADC  | [12: value] [4: channel]
  * 
  */
-
 
 //% color=190 weight=100 icon="\uf1ec" block="SBrick"
 namespace sbrick {
 
-    export const EVENT_SBRICK_CMD  = 12300
-    export const EVENT_SBRICK_FREQ = 12300
-    export const EVENT_SBRICK_RSP  = 12301
-    export const EVENT_SBRICK_ADC  = 12302
+    export const EVENT_SBRICK_CMD  = 0x300c
+    export const EVENT_SBRICK_FREQ = 0x300d
+    export const EVENT_SBRICK_RSP  = 0x300e
+    export const EVENT_SBRICK_ADC  = 0x300f
+
     export const EVENT_VALUE_SBRICK_CONNECTED = 0x8000
 
     let measurement_value: number = 0;
@@ -79,7 +79,7 @@ namespace sbrick {
     {
         control.raiseEvent(
             EVENT_SBRICK_CMD,
-            0x0000 + 256 * 2 * p
+            0x0000 + 512 * p
         )
     }
 
@@ -89,7 +89,7 @@ namespace sbrick {
     { 
         control.raiseEvent(
             EVENT_SBRICK_CMD,
-            0x1000 + 256 * (2 * p + d) + power
+            0x1000 + 512 * p + 256 * d + power
         )
     }
 
@@ -99,7 +99,7 @@ namespace sbrick {
     {
         control.raiseEvent(
             EVENT_SBRICK_CMD,
-            0x2000 + 256*ch
+            0x2000 + 256 * ch
         )
     }
 
@@ -109,8 +109,15 @@ namespace sbrick {
     {
         control.raiseEvent(
             EVENT_SBRICK_CMD,
-            0x3000 + 256*ch
+            0x3000 + 256 * ch
         )
+    }
+
+    //% blockId=sbrick_set_frequency
+    //% block="Set the SBrick's PWM frequency register to|%f"
+    export function sbrick_set_frequency(t1cc0h: number): void
+    {
+        control.raiseEvent(EVENT_SBRICK_FREQ, t1cc0h)
     }
 
     //% blockId=sbrick_on_connection_established
@@ -125,8 +132,9 @@ namespace sbrick {
     export function sbrick_on_measurement(ch: Channel, c: () => void): void
     {
         control.onEvent(EVENT_SBRICK_ADC, 0, () => {
-            if (ch == Channel.A0) { // TODO: read port from SBrick
-                measurement_value = control.eventValue() // TODO: read value from SBrick. 
+            let ev = control.eventValue()
+            if (ch == (ev & 0x000f)) {
+                measurement_value = ev >> 4
                 c()
             }
         })
