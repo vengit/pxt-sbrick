@@ -11,7 +11,7 @@
  * Clr m: EVENT_SBRICK_CMD  | [4: 3] [4: Channel] [8: n/a]
  * Freq:  EVENT_SBRICK_FREQ | [16: T1CC0H value low/hi byte]
  * 
- * Conn:  EVENT_SBRICK_RSP  | [1: 1] [15: n/a]
+ * Conn:  EVENT_SBRICK_RSP  | [1: 0] [15: n/a]
  * Meas:  EVENT_SBRICK_ADC  | [12: value] [4: channel]
  * 
  */
@@ -24,7 +24,7 @@ namespace sbrick {
     export const EVENT_SBRICK_RSP  = 0x300e
     export const EVENT_SBRICK_ADC  = 0x300f
 
-    export const EVENT_VALUE_SBRICK_CONNECTED = 0x8000
+    export const EVENT_VALUE_SBRICK_CONNECTED = 0x0000
 
     let measurement_value: number = 0;
 
@@ -32,7 +32,7 @@ namespace sbrick {
         A = 0,
         B = 2,
         C = 1,
-        D = 4
+        D = 3
     }
 
     export enum Channel {
@@ -138,5 +138,29 @@ namespace sbrick {
                 c()
             }
         })
+    }
+
+    //% blockId=sbrick_drive_from_accel
+    //% block="Drive |port %p|with acceleration read across dimension %d"
+    export function sbrick_drive_from_accel(p: Port, d: Dimension)
+    {
+        let x = input.acceleration(d) / 4;
+
+        if (x > 255) {
+          x = 255
+        }
+        if (x < -255) {
+          x = -255
+        }
+        if (x < 20 && x > -20) {
+            x = 0
+        }
+
+        if (x >= 0) {
+            sbrick.sbrick_drive(x, p, sbrick.Direction.Forward)
+        }
+        if (x < 0) {
+            sbrick.sbrick_drive(-x, p, sbrick.Direction.Backward)
+        }
     }
 }
