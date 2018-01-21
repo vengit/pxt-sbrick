@@ -9,7 +9,11 @@
     },
     "files": [
         "README.md",
-        "main.ts"
+        "main.ts",
+        "extension.cpp",
+        "extension.ts",
+        "shims.d.ts",
+        "enums.d.ts"
     ],
     "testFiles": [
         "test.ts"
