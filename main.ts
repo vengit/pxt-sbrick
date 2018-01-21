@@ -60,19 +60,6 @@ namespace sbrick {
         return measurement_value
     }
 
-    //% blockId=sbrick_connect
-    //% block="Connect to an SBrick|called %n"
-    export function sbrick_connect(n: string): void
-    {
-        let hash = 0
-        for (let c of n) {
-            let cc = c.charCodeAt(0)
-            hash = ((hash << 5) - hash) + cc
-            hash = hash & hash
-        }
-        bluetooth.advertiseUid(0x0198, hash, 7, true)
-    }
-
     //% blockId=sbrick_brake
     //% block="Brake on|port %p"
     export function sbrick_brake(p: Port): void
