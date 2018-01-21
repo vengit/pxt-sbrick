@@ -52,22 +52,6 @@ namespace sbrick {
         Backward = 1
     }
 
-    /**
-     * Connect to an SBrick
-     */
-    //% blockId=sbrick_connect
-    //% block="Connect to an SBrick|with name %n"
-    export function sbrick_connect(n: string): void
-    {
-        let hash = 0
-        for (let c of n) {
-            let cc = c.charCodeAt(0)
-            hash = ((hash << 5) - hash) + cc
-            hash = hash & hash
-        }
-        //sbrick.sbrick_connect_hash(hash)
-    }
-
     //% blockId=sbrick_measurement_value
     //% block="Measurement value"
     export function sbrick_measurement_value(): number
