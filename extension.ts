@@ -80,18 +80,11 @@ namespace sbrick {
         return
     }
 
-    //% blockId=sbrick_set_frequency
-    //% block="Set the SBrick's PWM frequency register to|%t1cc0h" shim=sbrick::setFrequency
-    export function setFrequency(t1cc0h: number): void
-    {
-        return
-    }
-
-    
     //% blockId=sbrick_drive_from_accel
     //% block="Drive |port %p|with acceleration read across dimension %d" shim=sbrick::driveFromAccel
     export function driveFromAccel(p: number, d: number): void
     {
         return
     }
+
 }

@@ -76,7 +76,7 @@ namespace sbrick {
     void onMeasurement(Action handler)
     {
         _measurementHandler = handler;
-        uBit.messageBus.listen(EVENT_SBRICK_ADC, MICROBIT_EVT_ANY, _onMeasurement);
+        uBit.messageBus.listen(EVENT_SBRICK_ADC, MICROBIT_EVT_ANY, _onMeasurement, MESSAGE_BUS_LISTENER_DROP_IF_BUSY);
     }
 
     //% blockId=sbrick_start_measurement
@@ -107,13 +107,6 @@ namespace sbrick {
         MicroBitEvent ev(EVENT_SBRICK_CMD, 0x1000 + 512 * p + 256 * d + power);
     }
 
-    //% blockId=sbrick_set_frequency
-    //% block="Set the SBrick's PWM frequency register to|%t1cc0h"
-    void setFrequency(int t1cc0h)
-    {
-        MicroBitEvent ev(EVENT_SBRICK_FREQ, t1cc0h);
-    }
-
     void _onConnected(MicroBitEvent e)
     {
         //if (NULL == _connectedHandler) return;
@@ -126,6 +119,25 @@ namespace sbrick {
     {
         _connectedHandler = handler;
         uBit.messageBus.listen(EVENT_SBRICK_RSP, EVENT_VALUE_SBRICK_CONNECTED, _onConnected);
+    }
+
+    // % blockId=sbrick_set_frequency
+    // % block="Set the SBrick's PWM frequency register to|%t1cc0h"
+    void setFrequency(int t1cc0h)
+    {
+        MicroBitEvent ev(EVENT_SBRICK_FREQ, t1cc0h);
+    }
+
+    // % blockId=sbrick_set_mode
+    // % block="Set adapter operation mode|type %type|mode %a|submode %b"
+    void setAdapterMode(int type, int a, int b)
+    { 
+        // TODO:
+        // Types:
+        // 0: default mode, voltage measurement
+        // 1: wedo 1 mode
+        // 2: wedo 2 mode (3.3V)
+        // 3: ev3 mode
     }
 
     //% blockId=sbrick_drive_from_accel

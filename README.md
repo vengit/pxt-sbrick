@@ -1,6 +1,8 @@
-[![Build Status](https://travis-ci.org/vengit/pxt-sbrick.svg?branch=master)](https://travis-ci.org/vengit/pxt-sbrick)
-
 # micro:bit SBrick extension
+
+## Blocks
+
+
 
 ## License
 
