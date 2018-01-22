@@ -1,5 +1,6 @@
 // tests go here; this will not be compiled when this package is used as a library
 
+sbrick.connect("SBrick")
 
 basic.showLeds(`
     . # . # .
@@ -9,9 +10,27 @@ basic.showLeds(`
     . # # # .
     `)
 
-sbrick.sbrick_connect("SBrick")
+bluetooth.onBluetoothConnected(() => {
+    basic.showLeds(`
+        . # # . .
+        . # . # .
+        . # # . .
+        . # . # .
+        . # # . .
+        `)
+})
 
-sbrick.sbrick_on_connection_established(() => {
+bluetooth.onBluetoothDisconnected(() => {
+    basic.showLeds(`
+        . . . . .
+        . # . # .
+        . . # . .
+        . # . # .
+        . . . . .
+        `)
+})
+
+sbrick.onConnected(() => {
     basic.showLeds(`
         . # # # .
         . # . . .
