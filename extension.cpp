@@ -76,7 +76,7 @@ namespace sbrick {
     void onMeasurement(Action handler)
     {
         _measurementHandler = handler;
-        uBit.messageBus.listen(EVENT_SBRICK_ADC, 0, _onMeasurement);
+        uBit.messageBus.listen(EVENT_SBRICK_ADC, MICROBIT_EVT_ANY, _onMeasurement);
     }
 
     //% blockId=sbrick_start_measurement
@@ -132,24 +132,37 @@ namespace sbrick {
     //% block="Drive |port %p|with acceleration read across dimension %d"
     void driveFromAccel(int p , int d)
     {
-        /*let x = input.acceleration(d) / 4;
+        int x = 0;
+        
+        switch (d) {
+            case 0:
+                x = uBit.accelerometer.getX();
+                break;
+            case 1:
+                x = uBit.accelerometer.getY();
+                break;
+            case 2:
+                x = uBit.accelerometer.getZ();
+                break;
+        }
+        x /= 4;
 
         if (x > 255) {
-          x = 255
+          x = 255;
         }
         if (x < -255) {
-          x = -255
+          x = -255;
         }
         if (x < 20 && x > -20) {
-            x = 0
+            x = 0;
         }
 
         if (x >= 0) {
-            sbrick.sbrick_drive(x, p, sbrick.Direction.Forward)
+            drive(x, p, 0);
         }
         if (x < 0) {
-            sbrick.sbrick_drive(-x, p, sbrick.Direction.Backward)
-        }*/
+            drive(-x, p, 1);
+        }
     }
 
 }

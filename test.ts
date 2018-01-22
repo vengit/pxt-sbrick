@@ -1,15 +1,3 @@
-// tests go here; this will not be compiled when this package is used as a library
-
-sbrick.connect("SBrick")
-
-basic.showLeds(`
-    . # . # .
-    . # . # .
-    . . . . .
-    # . . . #
-    . # # # .
-    `)
-
 bluetooth.onBluetoothConnected(() => {
     basic.showLeds(`
         . # # . .
@@ -38,4 +26,22 @@ sbrick.onConnected(() => {
         . . . # .
         . # # # .
         `)
+    sbrick.startMeasurement(2)
 })
+
+sbrick.onMeasurement(() => {
+    if (sbrick.measuredPort() == 2) {
+        led.toggle(0, 0)
+        sbrick.drive(sbrick.measuredValue() / 4, 1, 0)
+    }
+})
+
+basic.showLeds(`
+    . # . # .
+    . # . # .
+    . . . . .
+    # . . . #
+    . # # # .
+    `)
+
+sbrick.connect("SBrick")

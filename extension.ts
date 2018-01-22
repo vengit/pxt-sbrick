@@ -53,35 +53,35 @@ namespace sbrick {
     }
 
     //% blockId=sbrick_start_measurement
-    //% block="Start taking measurements on|port %p"
+    //% block="Start taking measurements on|port %p" shim=sbrick::startMeasurement
     export function startMeasurement(p: number): void
     {
         return
     }
 
     //% blockId=sbrick_stop_measurement
-    //% block="Stop taking measurements on|channel %ch"
+    //% block="Stop taking measurements on|channel %ch" shim=sbrick::stopMeasurement
     export function stopMeasurement(p: number): void
     {
         return
     }
 
     //% blockId=sbrick_brake
-    //% block="Brake on|port %p"
+    //% block="Brake on|port %p" shim=sbrick::brake
     export function brake(p: number): void
     {
         return
     }
 
     //% blockId=sbrick_drive
-    //% block="Apply|power %power|on port %p|in the direcion: %d"
+    //% block="Apply|power %power|on port %p|in the direcion: %d" shim=sbrick::drive
     export function drive(power: number, p: number, d: number): void
     { 
         return
     }
 
     //% blockId=sbrick_set_frequency
-    //% block="Set the SBrick's PWM frequency register to|%t1cc0h"
+    //% block="Set the SBrick's PWM frequency register to|%t1cc0h" shim=sbrick::setFrequency
     export function setFrequency(t1cc0h: number): void
     {
         return
@@ -89,7 +89,7 @@ namespace sbrick {
 
     
     //% blockId=sbrick_drive_from_accel
-    //% block="Drive |port %p|with acceleration read across dimension %d"
+    //% block="Drive |port %p|with acceleration read across dimension %d" shim=sbrick::driveFromAccel
     export function driveFromAccel(p: number, d: number): void
     {
         return
