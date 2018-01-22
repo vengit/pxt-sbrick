@@ -1,24 +1,7 @@
-/**
-* Provides blocks to send events to SBricks
-* A micro:bit event value contains an SBrick command and parameters.
-* The most significant 4 bit is the command, the rest are the parameters.
-*
-* Brake: EVENT_SBRICK_CMD  | [4: 0] [3: Port] [9: n/a ]
-* Drive: EVENT_SBRICK_CMD  | [4: 1] [3: Port] [1: direction] [8: power]
-* Set m: EVENT_SBRICK_CMD  | [4: 2] [4: Channel] [8: n/a]
-* Clr m: EVENT_SBRICK_CMD  | [4: 3] [4: Channel] [8: n/a]
-* Freq:  EVENT_SBRICK_FREQ | [16: T1CC0H value low/hi byte]
-* 
-* Conn:  EVENT_SBRICK_RSP  | [1: 0] [15: n/a]
-* Meas:  EVENT_SBRICK_ADC  | [12: value] [4: channel]
-* 
-*/
-
 #include "pxt.h"
 
 using namespace pxt;
 
-//% color=190 weight=100 icon="\uf1ec" block="SBrick"
 namespace sbrick {
 
     const uint16_t EVENT_SBRICK_CMD  = 0x300c;
@@ -45,9 +28,6 @@ namespace sbrick {
     Action _measurementHandler;
     Action _connectedHandler;
 
-    /**
-    * Connect to an SBrick given a name hash
-    */
     //% blockId=sbrick_connect
     //% block="Connect to an SBrick|named %n"
     void connect(StringData * n)
@@ -92,7 +72,7 @@ namespace sbrick {
     }
 
     //% blockId=sbrick_on_measurement
-    //% block="When voltage is measured at|channel %ch"
+    //% block="On voltage measurement"
     void onMeasurement(Action handler)
     {
         _measurementHandler = handler;
@@ -140,9 +120,6 @@ namespace sbrick {
         pxt::runAction0(_connectedHandler);
     }
 
-    /**
-    * Called when an SBrick is successfully connected
-    */
     //% blockId=sbrick_on_connected
     //% block="When an SBrick is successfully connected"
     void onConnected(Action handler)
@@ -153,7 +130,7 @@ namespace sbrick {
 
     //% blockId=sbrick_drive_from_accel
     //% block="Drive |port %p|with acceleration read across dimension %d"
-    void sbrick_drive_from_accel(int p , int d)
+    void driveFromAccel(int p , int d)
     {
         /*let x = input.acceleration(d) / 4;
 
