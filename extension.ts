@@ -14,7 +14,7 @@
 * 
 */
 
-//% color=190 weight=100 icon="\uf11b" block="SBrick"
+//% color=#e84a24 weight=100 icon="\uf11b" block="SBrick"
 namespace sbrick {
 
     //% blockId=sbrick_connect
