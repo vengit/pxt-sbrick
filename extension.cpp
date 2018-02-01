@@ -81,6 +81,12 @@ namespace sbrick {
     //% block="drive with|power %power|on port %p|in the direcion: %d"
     void drive(int power, SBPort p, SBDirection d)
     { 
+        if (power < 0) {
+            power = 0;
+        }
+        if (power > 255) {
+            power = 255;
+        }
         MicroBitEvent ev(EVENT_SBRICK_CMD, 0x1000 + 512 * (int)p + 256 * (int)d + power);
     }
 
@@ -103,12 +109,6 @@ namespace sbrick {
         }
         x /= 2.77; // 0-1024 -> 45° -> 0-255
 
-        if (x > 255) {
-          x = 255;
-        }
-        if (x < -255) {
-          x = -255;
-        }
         if (x < 20 && x > -20) {
             x = 0;
         }
