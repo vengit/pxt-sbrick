@@ -23,13 +23,35 @@ namespace sbrick {
         Backward = 1
     };
 
+    enum class SBDimension {
+        X = 0,
+        Y = 1,
+        Z = 2
+    };
+
     int _measuredValue;
     int _measuredPort;
     Action _measurementHandler;
     Action _connectedHandler;
 
+    void _onConnected(MicroBitEvent e)
+    {
+        //if (NULL == _connectedHandler) return;
+        pxt::runAction0(_connectedHandler);
+    }
+
+    void _onMeasurement(MicroBitEvent e)
+    {
+        //if (NULL == _measurementHandler) return;
+
+        _measuredPort = ((e.value & 0x000f) >> 1);
+        _measuredValue = e.value >> 4;
+
+        pxt::runAction0(_measurementHandler);
+    }
+
     //% blockId=sbrick_connect
-    //% block="Connect to an SBrick|named %n"
+    //% block="connect to SBrick|%n"
     void connect(StringData * n)
     {
         uint8_t tx_power_level = 7;
@@ -47,117 +69,39 @@ namespace sbrick {
         uBit.bleManager.setTransmitPower(tx_power_level);
     }
 
-    //% blockId=sbrick_measured_value
-    //% block="Measured value"
-    int measuredValue()
-    {
-        return _measuredValue;
-    }
-
-    //% blockId=sbrick_measured_port
-    //% block="Measured port"
-    int measuredPort()
-    {
-        return _measuredPort;
-    }
-
-    void _onMeasurement(MicroBitEvent e)
-    {
-        //if (NULL == _measurementHandler) return;
-
-        _measuredPort = ((e.value & 0x000f) >> 1);
-        _measuredValue = e.value >> 4;
-
-        pxt::runAction0(_measurementHandler);
-    }
-
-    //% blockId=sbrick_on_measurement
-    //% block="On voltage measurement"
-    void onMeasurement(Action handler)
-    {
-        _measurementHandler = handler;
-        uBit.messageBus.listen(EVENT_SBRICK_ADC, MICROBIT_EVT_ANY, _onMeasurement, MESSAGE_BUS_LISTENER_DROP_IF_BUSY);
-    }
-
-    //% blockId=sbrick_start_measurement
-    //% block="Start taking measurements on|port %p"
-    void startMeasurement(SBPort p)
-    {
-        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x2000 + 256 * ((int)p * 2 + 1));
-    }
-
-    //% blockId=sbrick_stop_measurement
-    //% block="Stop taking measurements on|channel %ch"
-    void stopMeasurement(int p)
-    {
-        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x3000 + 256 * (p * 2 + 1));
-    }
-
-    //% blockId=sbrick_brake
-    //% block="Brake on|port %p"
-    void brake(int p)
-    {
-        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x0000 + 512 * p);
-    }
-
-    //% blockId=sbrick_drive
-    //% block="Apply|power %power|on port %p|in the direcion: %d"
-    void drive(int power, int p, int d)
-    { 
-        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x1000 + 512 * p + 256 * d + power);
-    }
-
-    void _onConnected(MicroBitEvent e)
-    {
-        //if (NULL == _connectedHandler) return;
-        pxt::runAction0(_connectedHandler);
-    }
-
     //% blockId=sbrick_on_connected
-    //% block="When an SBrick is successfully connected"
+    //% block="on sbrick connected"
     void onConnected(Action handler)
     {
         _connectedHandler = handler;
         uBit.messageBus.listen(EVENT_SBRICK_RSP, EVENT_VALUE_SBRICK_CONNECTED, _onConnected);
     }
 
-    // % blockId=sbrick_set_frequency
-    // % block="Set the SBrick's PWM frequency register to|%t1cc0h"
-    void setFrequency(int t1cc0h)
-    {
-        MicroBitEvent ev(EVENT_SBRICK_FREQ, t1cc0h);
-    }
-
-    // % blockId=sbrick_set_mode
-    // % block="Set adapter operation mode|type %type|mode %a|submode %b"
-    void setAdapterMode(int type, int a, int b)
+    //% blockId=sbrick_drive
+    //% block="drive with|power %power|on port %p|in the direcion: %d"
+    void drive(int power, SBPort p, SBDirection d)
     { 
-        // TODO:
-        // Types:
-        // 0: default mode, voltage measurement
-        // 1: wedo 1 mode
-        // 2: wedo 2 mode (3.3V)
-        // 3: ev3 mode
+        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x1000 + 512 * (int)p + 256 * (int)d + power);
     }
 
     //% blockId=sbrick_drive_from_accel
-    //% block="Drive |port %p|with acceleration read across dimension %d"
-    void driveFromAccel(int p , int d)
+    //% block="drive |port %p|with acceleration read across dimension %d"
+    void driveFromAccel(SBPort p , SBDimension d)
     {
         int x = 0;
         
         switch (d) {
-            case 0:
+            case SBDimension::X:
                 x = uBit.accelerometer.getX();
                 break;
-            case 1:
+            case SBDimension::Y:
                 x = uBit.accelerometer.getY();
                 break;
-            case 2:
+            case SBDimension::Z:
                 x = uBit.accelerometer.getZ();
                 break;
         }
-        x /= 4;
+        x /= 2.77; // 0-1024 -> 45° -> 0-255
 
         if (x > 255) {
           x = 255;
@@ -170,11 +114,54 @@ namespace sbrick {
         }
 
         if (x >= 0) {
-            drive(x, p, 0);
+            drive(x, p, SBDirection::Forward);
         }
         if (x < 0) {
-            drive(-x, p, 1);
+            drive(-x, p, SBDirection::Backward);
         }
+    }
+
+    //% blockId=sbrick_brake
+    //% block="brake on|port %p"
+    void brake(SBPort p)
+    {
+        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x0000 + 512 * (int)p);
+    }
+
+    //% blockId=sbrick_start_measurement
+    //% block="start taking measurements on|port %p"
+    void startMeasurement(SBPort p)
+    {
+        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x2000 + 256 * ((int)p * 2 + 1));
+    }
+
+    //% blockId=sbrick_stop_measurement
+    //% block="stop taking measurements on|channel %ch"
+    void stopMeasurement(SBPort p)
+    {
+        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x3000 + 256 * ((int)p * 2 + 1));
+    }
+
+    //% blockId=sbrick_on_measurement
+    //% block="on measurement"
+    void onMeasurement(Action handler)
+    {
+        _measurementHandler = handler;
+        uBit.messageBus.listen(EVENT_SBRICK_ADC, MICROBIT_EVT_ANY, _onMeasurement, MESSAGE_BUS_LISTENER_DROP_IF_BUSY);
+    }
+
+    //% blockId=sbrick_measured_value
+    //% block="measured value"
+    int measuredValue()
+    {
+        return _measuredValue;
+    }
+
+    //% blockId=sbrick_measured_port
+    //% block="measured port"
+    int measuredPort()
+    {
+        return _measuredPort;
     }
 
 }

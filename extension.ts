@@ -18,73 +18,73 @@
 namespace sbrick {
 
     //% blockId=sbrick_connect
-    //% block="Connect to an SBrick|named %n" shim=sbrick::connect
+    //% block="connect to SBrick|%n" shim=sbrick::connect
     export function connect(n: string): void
     {
         return
     }
 
     //% blockId=sbrick_on_connected
-    //% block="When an SBrick is successfully connected" shim=sbrick::onConnected
+    //% block="on sbrick connected" shim=sbrick::onConnected
     export function onConnected(handler: () => void): void
     {
         return
     }
 
-    //% blockId=sbrick_measured_value
-    //% block="Measured value" shim=sbrick::measuredValue
-    export function measuredValue(): number
-    {
-        return 0
+    //% blockId=sbrick_drive
+    //% block="drive with|power %power|on port %p|in the direcion: %d" shim=sbrick::drive
+    export function drive(power: number, p: SBPort, d: SBDirection): void
+    { 
+        return
     }
 
-    //% blockId=sbrick_measured_port
-    //% block="Measured port" shim=sbrick::measuredPort
-    export function measuredPort(): number
+    //% blockId=sbrick_drive_from_accel
+    //% block="drive |port %p|with acceleration read across dimension %d" shim=sbrick::driveFromAccel
+    export function driveFromAccel(p: SBPort, d: SBDimension): void
     {
-        return 0
+        return
     }
 
-    //% blockId=sbrick_on_measurement
-    //% block="On voltage measurement" shim=sbrick::onMeasurement
-    export function onMeasurement(handler: () => void): void
+    //% blockId=sbrick_brake
+    //% block="brake on|port %p" shim=sbrick::brake
+    export function brake(p: SBPort): void
     {
         return
     }
 
     //% blockId=sbrick_start_measurement
-    //% block="Start taking measurements on|port %p" shim=sbrick::startMeasurement
+    //% block="start taking measurements on|port %p" shim=sbrick::startMeasurement
     export function startMeasurement(p: SBPort): void
     {
         return
     }
 
     //% blockId=sbrick_stop_measurement
-    //% block="Stop taking measurements on|channel %ch" shim=sbrick::stopMeasurement
-    export function stopMeasurement(p: number): void
+    //% block="stop taking measurements on|channel %ch" shim=sbrick::stopMeasurement
+    export function stopMeasurement(p: SBPort): void
     {
         return
     }
 
-    //% blockId=sbrick_brake
-    //% block="Brake on|port %p" shim=sbrick::brake
-    export function brake(p: number): void
+    //% blockId=sbrick_on_measurement
+    //% block="on measurement" shim=sbrick::onMeasurement
+    export function onMeasurement(handler: () => void): void
     {
         return
     }
 
-    //% blockId=sbrick_drive
-    //% block="Apply|power %power|on port %p|in the direcion: %d" shim=sbrick::drive
-    export function drive(power: number, p: number, d: number): void
-    { 
-        return
+    //% blockId=sbrick_measured_value
+    //% block="measured value" shim=sbrick::measuredValue
+    export function measuredValue(): number
+    {
+        return 0
     }
 
-    //% blockId=sbrick_drive_from_accel
-    //% block="Drive |port %p|with acceleration read across dimension %d" shim=sbrick::driveFromAccel
-    export function driveFromAccel(p: number, d: number): void
+    //% blockId=sbrick_measured_port
+    //% block="measured port" shim=sbrick::measuredPort
+    export function measuredPort(): number
     {
-        return
+        return 0
     }
 
 }

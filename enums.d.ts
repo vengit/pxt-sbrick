@@ -14,4 +14,11 @@
     Backward = 1,
     }
 
+
+    declare const enum SBDimension {
+    X = 0,
+    Y = 1,
+    Z = 2,
+    }
+
 // Auto-generated. Do not edit. Really.
