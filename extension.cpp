@@ -11,17 +11,17 @@ namespace sbrick {
 
     const uint16_t EVENT_VALUE_SBRICK_CONNECTED = 0x0000;
 
-    /* e n um P ort {
+    enum class SBPort {
         A = 0,
         B = 2,
         C = 1,
         D = 3
     };
 
-    en u m D i r ection {
+    enum class SBDirection {
         Forward = 0,
         Backward = 1
-    }; */
+    };
 
     int _measuredValue;
     int _measuredPort;
@@ -81,9 +81,9 @@ namespace sbrick {
 
     //% blockId=sbrick_start_measurement
     //% block="Start taking measurements on|port %p"
-    void startMeasurement(int p)
+    void startMeasurement(SBPort p)
     {
-        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x2000 + 256 * (p * 2 + 1));
+        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x2000 + 256 * ((int)p * 2 + 1));
     }
 
     //% blockId=sbrick_stop_measurement

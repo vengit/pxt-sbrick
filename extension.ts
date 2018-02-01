@@ -54,7 +54,7 @@ namespace sbrick {
 
     //% blockId=sbrick_start_measurement
     //% block="Start taking measurements on|port %p" shim=sbrick::startMeasurement
-    export function startMeasurement(p: number): void
+    export function startMeasurement(p: SBPort): void
     {
         return
     }
