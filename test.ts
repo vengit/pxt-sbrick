@@ -26,7 +26,7 @@ sbrick.onConnected(() => {
         . . . # .
         . # # # .
         `)
-    sbrick.startMeasurement(2)
+    sbrick.setDevice(SBConnectedDevice.Wedo1Motion, SBPort.A)
 })
 
 sbrick.onMeasurement(() => {

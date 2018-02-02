@@ -52,16 +52,9 @@ namespace sbrick {
         return
     }
 
-    //% blockId=sbrick_start_measurement
-    //% block="start taking measurements on|port %p" shim=sbrick::startMeasurement
-    export function startMeasurement(p: SBPort): void
-    {
-        return
-    }
-
-    //% blockId=sbrick_stop_measurement
-    //% block="stop taking measurements on|channel %ch" shim=sbrick::stopMeasurement
-    export function stopMeasurement(p: SBPort): void
+    //% blockId=sbrick_set_device
+    //% block="use device|type %d|on port %p" shim=sbrick::setDevice
+    export function setDevice(d: SBConnectedDevice, p: SBPort): void
     {
         return
     }
@@ -82,9 +75,15 @@ namespace sbrick {
 
     //% blockId=sbrick_measured_port
     //% block="measured port" shim=sbrick::measuredPort
-    export function measuredPort(): number
+    export function measuredPort(): SBPort
     {
-        return 0
+        return SBPort.A
     }
 
+    //% blockId=sbrick_measured_port_is
+    //% block="measured port is" shim=sbrick::measuredPortIs
+    export function measuredPortIs(p: SBPort): boolean
+    {
+        return false
+    }
 }

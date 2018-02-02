@@ -29,8 +29,55 @@ namespace sbrick {
         Z = 2
     };
 
+    enum class SBConnectedDevice {
+        //% block="Motor, Servo, or LED"
+        Output                =  0,
+        //% block="WeDo Motion Sensor"
+        Wedo1Motion           =  1,
+        //% block=" WeDo Tilt Sensor"
+        Wedo1Tilt             =  2,
+        //% block="Wedo 2 Motion Sensor (motion detection)"
+        Wedo2MotionDetection  =  3,
+        //% block="Wedo 2 Motion Sensor (counter)"
+        Wedo2MotionCounter    =  4,
+        //% block="WeDo 2 Tilt Sensor, X axis"
+        Wedo2TiltX            =  5,
+        //% block="WeDo 2 Tilt Sensor, Y axis"
+        Wedo2TiltY            =  6,
+        //% block="WeDo 2 Tilt Sensor, tilt"
+        Wedo2Tilt             =  7,
+        //% block="WeDo 2 Tilt Sensor, crash counter"
+        Wedo2TiltCrash        =  8,
+        //% block="NXT Touch Sensor"
+        NXTTouch              =  9,
+        //% block="NXT Light Sensor"
+        NXTLight              = 10,
+        //% block="EV3 Touch Sensor"
+        EV3Touch              = 11,
+        //% block="EV3 Infrared Sensor, distance"
+        EV3InfraredDistance   = 12,
+        //% block="EV3 Infrared Sensor, remote"
+        EV3InfraredRemote     = 13,
+        //% block="EV3 Ultrasonic Sensor, distance"
+        EV3UltrasonicDistance = 14,
+        //% block="EV3 Ultrasonic Sensor, listen"
+        EV3UltrasonicListen   = 15,
+        //% block="EV3 Gyroscope"
+        EV3GyroAngle          = 16,
+        //% block="EV3 Color Sensor, reflection"
+        EV3ColorReflection    = 17,
+        //% block="EV3 Color Sensor, ambient"
+        EV3ColorAmbient       = 18,
+        //% block="EV3 Color Sensor, color"
+        EV3ColorColor         = 19,
+        //% block="Boost Color Sensor"
+        BoostColorColor       = 20,
+        //% block="Boost Motor, position"
+        BoostMotorPosition    = 21
+    };
+
     int _measuredValue;
-    int _measuredPort;
+    SBPort _measuredPort;
     Action _measurementHandler;
     Action _connectedHandler;
 
@@ -44,7 +91,7 @@ namespace sbrick {
     {
         //if (NULL == _measurementHandler) return;
 
-        _measuredPort = ((e.value & 0x000f) >> 1);
+        _measuredPort = (SBPort)((e.value & 0x000f) >> 1);
         _measuredValue = e.value >> 4;
 
         pxt::runAction0(_measurementHandler);
@@ -128,18 +175,15 @@ namespace sbrick {
         MicroBitEvent ev(EVENT_SBRICK_CMD, 0x0000 + 512 * (int)p);
     }
 
-    //% blockId=sbrick_start_measurement
-    //% block="start taking measurements on|port %p"
-    void startMeasurement(SBPort p)
+    //% blockId=sbrick_set_device
+    //% block="use device|type %d|on port %p"
+    void setDevice(SBConnectedDevice d, SBPort p)
     {
-        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x2000 + 256 * ((int)p * 2 + 1));
-    }
-
-    //% blockId=sbrick_stop_measurement
-    //% block="stop taking measurements on|channel %ch"
-    void stopMeasurement(SBPort p)
-    {
-        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x3000 + 256 * ((int)p * 2 + 1));
+        if (d == SBConnectedDevice::Output) {
+            MicroBitEvent ev(EVENT_SBRICK_CMD, 0x3000 + 256 * ((int)p * 2 + 1)); // Clear measurement
+        } else {
+            MicroBitEvent ev(EVENT_SBRICK_CMD, 0x2000 + 256 * ((int)p * 2 + 1)); // Set measurement
+        }
     }
 
     //% blockId=sbrick_on_measurement
@@ -159,9 +203,15 @@ namespace sbrick {
 
     //% blockId=sbrick_measured_port
     //% block="measured port"
-    int measuredPort()
+    SBPort measuredPort()
     {
         return _measuredPort;
     }
 
+    //% blockId=sbrick_measured_port_is
+    //% block="measured port is"
+    bool measuredPortIs(SBPort p)
+    {
+        return _measuredPort == p;
+    }
 }

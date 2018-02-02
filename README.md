@@ -54,14 +54,9 @@ This command will cause an electrical short circuit on the given port of the
 SBrick. If a motor is connected to that port, this will make it hard to turn,
 and will act a brake.
 
-### Start taking measurements
+### Use device
 
-Configure a port on SBrick to periodically record the voltage on one of it's
-ports.
-
-### Stop taking measurements
-
-Stop previously set up periodic measurements.
+Configure a port on SBrick for a specific type of device.
 
 ### On measurement
 
