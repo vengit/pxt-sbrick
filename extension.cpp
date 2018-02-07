@@ -201,15 +201,8 @@ namespace sbrick {
         return _measuredValue;
     }
 
-    //% blockId=sbrick_measured_port
-    //% block="measured port"
-    SBPort measuredPort()
-    {
-        return _measuredPort;
-    }
-
     //% blockId=sbrick_measured_port_is
-    //% block="measured port is"
+    //% block="measured port is|%p"
     bool measuredPortIs(SBPort p)
     {
         return _measuredPort == p;

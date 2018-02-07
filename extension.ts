@@ -73,15 +73,8 @@ namespace sbrick {
         return 0
     }
 
-    //% blockId=sbrick_measured_port
-    //% block="measured port" shim=sbrick::measuredPort
-    export function measuredPort(): SBPort
-    {
-        return SBPort.A
-    }
-
     //% blockId=sbrick_measured_port_is
-    //% block="measured port is" shim=sbrick::measuredPortIs
+    //% block="measured port is|%p" shim=sbrick::measuredPortIs
     export function measuredPortIs(p: SBPort): boolean
     {
         return false
