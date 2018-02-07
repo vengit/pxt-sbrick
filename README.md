@@ -13,6 +13,8 @@ namespace, and the JavaScript hashCode() of the name of the SBrick as the
 instance. The byte order used is little endian. SBrick listens to such packages 
 and decides to initiate a connection accordingly.
 
+Make sure you have the latest firmware on your SBrick.
+
 ## Setup
 
 The SBrick extension requires Bluetooth, and therefore conflicts with Radio.
