@@ -5,11 +5,11 @@ using namespace pxt;
 namespace sbrick {
 
     const uint16_t EVENT_SBRICK_CMD  = 0x300c;
-    const uint16_t EVENT_SBRICK_FREQ = 0x300d;
-    const uint16_t EVENT_SBRICK_RSP  = 0x300e;
-    const uint16_t EVENT_SBRICK_ADC  = 0x300f;
+    const uint16_t EVENT_SBRICK_RSP  = 0x300d;
+    const uint16_t EVENT_SBRICK_ADC  = 0x300e;
 
     const uint16_t EVENT_VALUE_SBRICK_CONNECTED = 0x0000;
+    const uint16_t EVENT_VALUE_SIGNAL_COMPLETED = 0x1000;
 
     enum class SBPort {
         A = 0,
@@ -179,11 +179,86 @@ namespace sbrick {
     //% block="use device|type %d|on port %p"
     void setDevice(SBConnectedDevice d, SBPort p)
     {
-        if (d == SBConnectedDevice::Output) {
-            MicroBitEvent ev(EVENT_SBRICK_CMD, 0x3000 + 256 * ((int)p * 2 + 1)); // Clear measurement
-        } else {
-            MicroBitEvent ev(EVENT_SBRICK_CMD, 0x2000 + 256 * ((int)p * 2 + 1)); // Set measurement
+        // 1a. Fire up a "signal" if needed (in case of adapters)
+        //     A value needs to be stored globally. This value will be sent
+        //     to the SBrick next as the channel compensation type
+        // 1b. in the signal completed callback, call the channel compensation
+        //     setting function, then "set measurement"
+        //     TODO: "set measurement" should also set channel compensation
+        // 2. Just "set measurement" with compensation immediately.
+        MicroBitEvent ev(EVENT_SBRICK_CMD, 0,  CREATE_ONLY);
+        
+
+        switch (d) {
+            case SBConnectedDevice::Output:
+                ev.value = 0x3000 + 256 * ((int)p * 2 + 1); // Clear measurement
+                break;
+            case SBConnectedDevice::Wedo1Motion:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::Wedo1Tilt:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::Wedo2MotionDetection:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::Wedo2MotionCounter:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::Wedo2TiltX:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::Wedo2TiltY:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::Wedo2Tilt:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::Wedo2TiltCrash:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::NXTTouch:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::NXTLight:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::EV3Touch:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::EV3InfraredDistance:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::EV3InfraredRemote:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::EV3UltrasonicDistance:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::EV3UltrasonicListen:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::EV3GyroAngle:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::EV3ColorReflection:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::EV3ColorAmbient:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::EV3ColorColor:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::BoostColorColor:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
+            case SBConnectedDevice::BoostMotorPosition:
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                break;
         }
+
+        ev.fire();
     }
 
     //% blockId=sbrick_on_measurement
