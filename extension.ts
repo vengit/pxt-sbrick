@@ -5,10 +5,11 @@
 *
 * Events sent to SBrick:
 *
-* Brake: EVENT_SBRICK_CMD  | [4: 0] [3: Port] [9: n/a ]
-* Drive: EVENT_SBRICK_CMD  | [4: 1] [3: Port] [1: direction] [8: power]
-* Set m: EVENT_SBRICK_CMD  | [4: 2] [4: Channel] [8: compensation profile]
-* Clr m: EVENT_SBRICK_CMD  | [4: 3] [4: Channel] [8: n/a]
+* Brake:       EVENT_SBRICK_CMD | [4: 0] [3: Port] [9: n/a ]
+* Drive:       EVENT_SBRICK_CMD | [4: 1] [3: Port] [1: direction] [8: power]
+* Set m:       EVENT_SBRICK_CMD | [4: 2] [4: Channel] [8: compensation profile]
+* Clr m:       EVENT_SBRICK_CMD | [4: 3] [4: Channel] [8: n/a]
+* Send signal: EVENT_SBRICK_CMD | [4: 4] [4: Port] [8: duty cycle]
 *
 * Events received from SBrick:
 *
