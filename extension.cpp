@@ -156,10 +156,10 @@ namespace sbrick {
                 ev.value = 0x3000 + 256 * ((int)p * 2 + 1); // Clear measurement
                 break;
             case SBConnectedDevice::Wedo1Motion:
-                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1) + 1; // Set measurement
                 break;
             case SBConnectedDevice::Wedo1Tilt:
-                ev.value = 0x2000 + 256 * ((int)p * 2 + 1); // Set measurement
+                ev.value = 0x2000 + 256 * ((int)p * 2 + 1) + 1; // Set measurement
                 break;
         }
 
