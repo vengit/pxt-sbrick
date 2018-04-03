@@ -126,13 +126,13 @@ basic.showLeds(`
     . # # # .
     `)
 
-sbrick.connect("SBrick1")
+sbrick.connect("SBrick")
 
 ```
 
 ### Stop at the wall
 
-The example below will connect to an SBrick named "SBrick1", starts a motor on 
+The example below will connect to an SBrick named "SBrick", starts a motor on 
 por D, then it receives measurement data from a WeDo infrared sensor on port C. 
 The received data is displayed as a bar graph. If there is an object in front 
 of the sensor, the motor is stopped. If the object is removed, the motor is 
@@ -193,7 +193,7 @@ basic.showLeds(`
     . # # # .
     `)
 
-sbrick.connect("SBrick1")
+sbrick.connect("SBrick")
 ```
 
 ## License
