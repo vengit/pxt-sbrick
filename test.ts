@@ -1,3 +1,5 @@
+let distance = 0
+
 bluetooth.onBluetoothConnected(() => {
     basic.showLeds(`
         . # # . .
@@ -10,11 +12,11 @@ bluetooth.onBluetoothConnected(() => {
 
 bluetooth.onBluetoothDisconnected(() => {
     basic.showLeds(`
-        . . . . .
         . # . # .
-        . . # . .
         . # . # .
         . . . . .
+        # . . . #
+        . # # # .
         `)
 })
 
@@ -26,12 +28,20 @@ sbrick.onConnected(() => {
         . . . # .
         . # # # .
         `)
-    sbrick.setDevice(SBConnectedDevice.Wedo1Motion, SBPort.A)
+    sbrick.setDevice(SBConnectedDevice.Wedo1Motion, SBPort.C)
 })
 
 sbrick.onMeasurement(() => {
-    led.toggle(0, 0)
-    sbrick.drive(sbrick.measuredValue() / 4, 1, 0)
+    distance = sbrick.measuredValue() - 200
+    led.plotBarGraph(
+        distance,
+        220
+    )
+    if (distance <= 100) {
+        sbrick.drive(255, SBPort.D, SBDirection.Forward)
+    } else {
+        sbrick.brake(SBPort.D)
+    }
 })
 
 basic.showLeds(`
