@@ -5,11 +5,11 @@ using namespace pxt;
 namespace sbrick {
 
     const uint16_t EVENT_SBRICK_CMD  = 0x300c;
-    const uint16_t EVENT_SBRICK_RSP  = 0x300d;
-    const uint16_t EVENT_SBRICK_ADC  = 0x300e;
+    const uint16_t EVENT_SBRICK_FREQ = 0x300d;
+    const uint16_t EVENT_SBRICK_RSP  = 0x300e;
+    const uint16_t EVENT_SBRICK_ADC  = 0x300f;
 
     const uint16_t EVENT_VALUE_SBRICK_CONNECTED = 0x0000;
-    const uint16_t EVENT_VALUE_SIGNAL_COMPLETED = 0x1000;
 
     enum class SBPort {
         A = 0,
@@ -35,7 +35,45 @@ namespace sbrick {
         //% block="WeDo Motion Sensor"
         Wedo1Motion           =  1,
         //% block=" WeDo Tilt Sensor"
-        Wedo1Tilt             =  2
+        Wedo1Tilt             =  2,
+        //% block="Wedo 2 Motion Sensor (motion detection)"
+        Wedo2MotionDetection  =  3,
+        //% block="Wedo 2 Motion Sensor (counter)"
+        Wedo2MotionCounter    =  4,
+        //% block="WeDo 2 Tilt Sensor, X axis"
+        Wedo2TiltX            =  5,
+        //% block="WeDo 2 Tilt Sensor, Y axis"
+        Wedo2TiltY            =  6,
+        //% block="WeDo 2 Tilt Sensor, tilt"
+        Wedo2Tilt             =  7,
+        //% block="WeDo 2 Tilt Sensor, crash counter"
+        Wedo2TiltCrash        =  8,
+        //% block="NXT Touch Sensor"
+        NXTTouch              =  9,
+        //% block="NXT Light Sensor"
+        NXTLight              = 10,
+        //% block="EV3 Touch Sensor"
+        EV3Touch              = 11,
+        //% block="EV3 Infrared Sensor, distance"
+        EV3InfraredDistance   = 12,
+        //% block="EV3 Infrared Sensor, remote"
+        EV3InfraredRemote     = 13,
+        //% block="EV3 Ultrasonic Sensor, distance"
+        EV3UltrasonicDistance = 14,
+        //% block="EV3 Ultrasonic Sensor, listen"
+        EV3UltrasonicListen   = 15,
+        //% block="EV3 Gyroscope"
+        EV3GyroAngle          = 16,
+        //% block="EV3 Color Sensor, reflection"
+        EV3ColorReflection    = 17,
+        //% block="EV3 Color Sensor, ambient"
+        EV3ColorAmbient       = 18,
+        //% block="EV3 Color Sensor, color"
+        EV3ColorColor         = 19,
+        //% block="Boost Color Sensor"
+        BoostColorColor       = 20,
+        //% block="Boost Motor, position"
+        BoostMotorPosition    = 21
     };
 
     int _measuredValue;
@@ -141,29 +179,11 @@ namespace sbrick {
     //% block="use device|type %d|on port %p"
     void setDevice(SBConnectedDevice d, SBPort p)
     {
-        // 1a. Fire up a "signal" if needed (in case of adapters)
-        //     A value needs to be stored globally. This value will be sent
-        //     to the SBrick next as the channel compensation type
-        // 1b. in the signal completed callback, call the channel compensation
-        //     setting function, then "set measurement"
-        //     TODO: "set measurement" should also set channel compensation
-        // 2. Just "set measurement" with compensation immediately.
-        MicroBitEvent ev(EVENT_SBRICK_CMD, 0,  CREATE_ONLY);
-        
-
-        switch (d) {
-            case SBConnectedDevice::Output:
-                ev.value = 0x3000 + 256 * ((int)p * 2 + 1); // Clear measurement
-                break;
-            case SBConnectedDevice::Wedo1Motion:
-                ev.value = 0x2000 + 256 * ((int)p * 2 + 1) + 1; // Set measurement
-                break;
-            case SBConnectedDevice::Wedo1Tilt:
-                ev.value = 0x2000 + 256 * ((int)p * 2 + 1) + 1; // Set measurement
-                break;
+        if (d == SBConnectedDevice::Output) {
+            MicroBitEvent ev(EVENT_SBRICK_CMD, 0x3000 + 256 * ((int)p * 2 + 1)); // Clear measurement
+        } else {
+            MicroBitEvent ev(EVENT_SBRICK_CMD, 0x2000 + 256 * ((int)p * 2 + 1)); // Set measurement
         }
-
-        ev.fire();
     }
 
     //% blockId=sbrick_on_measurement
@@ -179,6 +199,13 @@ namespace sbrick {
     int measuredValue()
     {
         return _measuredValue;
+    }
+
+    //% blockId=sbrick_measured_port
+    //% block="measured port"
+    SBPort measuredPort()
+    {
+        return _measuredPort;
     }
 
     //% blockId=sbrick_measured_port_is
