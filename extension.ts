@@ -23,10 +23,31 @@
 namespace sbrick {
 
     //% blockId=sbrick_connect
-    //% block="connect to SBrick|%n" shim=sbrick::connect
+    //% block="connect to SBrick|%n"
+    //shim=sbrick::connect
     export function connect(n: string): void
     {
-        return
+        let hash = 0
+        
+        for (let i = 0; i < n.length; i++) {
+            hash = (hash << 5) - hash + n.charCodeAt(i) | 0;
+        }
+
+        /* char ns[]  = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x98};
+        char ins[] = 
+            { 0x00
+            , 0x00
+            , (char)((hash >> 24) & 0xff)
+            , (char)((hash >> 16) & 0xff)
+            , (char)((hash >> 8) & 0xff)
+            , (char)((hash >> 0) & 0xff)
+            };
+
+        uBit.bleManager.advertiseEddystoneUid(0x9801, hash, CALIBRATED_POWERS[tx_power_level - 1], true, MICROBIT_BLE_EDDYSTONE_ADV_INTERVAL);
+        uBit.bleManager.setTransmitPower(tx_power_level);
+        */
+
+        bluetooth.advertiseUid(0x0198, hash, 7, true)
     }
 
     //% blockId=sbrick_on_connected
