@@ -17,10 +17,10 @@ bluetooth.onBluetoothDisconnected(() => {
         `)
 })
 sbrick.onMeasurement(() => {
-    if (sbrick.measuredPort() == 0) {
+    if (sbrick.measuredPortIs(SBPort.A)) {
         led.plotBarGraph(
-        sbrick.measuredValue() - 200,
-        250
+            sbrick.measuredValue() - 200,
+            250
         )
     }
 })
@@ -32,7 +32,7 @@ sbrick.onConnected(() => {
         . . . # .
         . # # # .
         `)
-    sbrick.startMeasurement(0)
+    sbrick.setDevice(SBConnectedDevice.Wedo1Motion, SBPort.A)
 })
 basic.showLeds(`
     . # . # .

@@ -33,20 +33,7 @@ namespace sbrick {
             hash = (hash << 5) - hash + n.charCodeAt(i) | 0;
         }
 
-        /* char ns[]  = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x98};
-        char ins[] = 
-            { 0x00
-            , 0x00
-            , (char)((hash >> 24) & 0xff)
-            , (char)((hash >> 16) & 0xff)
-            , (char)((hash >> 8) & 0xff)
-            , (char)((hash >> 0) & 0xff)
-            };
-
-        uBit.bleManager.advertiseEddystoneUid(0x9801, hash, CALIBRATED_POWERS[tx_power_level - 1], true, MICROBIT_BLE_EDDYSTONE_ADV_INTERVAL);
-        uBit.bleManager.setTransmitPower(tx_power_level);
-        */
-
+        bluetooth.setTransmitPower(7)
         bluetooth.advertiseUid(0x0198, hash, 7, true)
     }
 
