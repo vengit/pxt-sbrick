@@ -80,6 +80,34 @@ namespace sbrick {
         MicroBitEvent ev(EVENT_SBRICK_CMD, 0x1000 + 512 * (int)p + 256 * (int)d + power);
     }
 
+    //% blockId=sbrick_lightmono
+    //% block="light on with |power %power|on channel %c" shim=sbrick::lightmono
+    void lightmono(int power, int c)
+    { 
+        if (c < 0 || c >= 24) {
+            return;
+        }
+        if (power < 0) {
+            power = 0;
+        }
+        if (power > 255) {
+            power = 255;
+        }
+        MicroBitEvent ev(EVENT_SBRICK_CMD, 0x0000 + 256 * c + power);
+    }
+
+    //% blockId=sbrick_lightrgb
+    //% block="RGB light on with |red %red|green %green|blue %blue|on port %p" shim=sbrick::lightrgb
+    void lightrgb(int red, int green, int blue, int p)
+    { 
+        if (p < 0 || p >= 8) {
+            return;
+        }
+        lightmono(red,   p * 3 + 0);
+        lightmono(green, p * 3 + 1);
+        lightmono(blue,  p * 3 + 2);
+    }
+
     //% blockId=sbrick_drive_from_accel
     //% block="drive |port %p|with acceleration read across dimension %d"
     void driveFromAccel(SBPort p , SBDimension d)

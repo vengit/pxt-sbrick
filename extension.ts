@@ -51,6 +51,20 @@ namespace sbrick {
         return
     }
 
+    //% blockId=sbrick_lightmono
+    //% block="light on with |power %power|on channel %c" shim=sbrick::lightmono
+    export function lightMono(power: number, c: number): void
+    { 
+        return
+    }
+
+    //% blockId=sbrick_lightrgb
+    //% block="RGB light on with |red %red|green %green|blue %blue|on port %p" shim=sbrick::lightrgb
+    export function lightRGB(red: number, green: number, blue: number, p: number): void
+    { 
+        return
+    }
+
     //% blockId=sbrick_drive_from_accel
     //% block="drive |port %p|with acceleration read across dimension %d" shim=sbrick::driveFromAccel
     export function driveFromAccel(p: SBPort, d: SBDimension): void

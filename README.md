@@ -195,6 +195,16 @@ basic.showLeds(`
 
 sbrick.connect("SBrick")
 ```
+## Building on Ubuntu 20.04 Focal Fossa
+
+```
+npm -g install pxt
+npm install
+pxt target microbit
+pxt build
+pxt serve
+
+```
 
 ## License
 
